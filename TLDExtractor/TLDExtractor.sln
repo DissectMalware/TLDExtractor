@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TLDExtractor", "TLDExtractor\TLDExtractor.csproj", "{D7079EA7-79A7-4D59-A1C2-A9B969D44BE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TLDExtractorDemo", "TLDExtractorDemo\TLDExtractorDemo.csproj", "{3D030CB6-CC46-4A4C-AF8E-15AF2423A6A2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D7079EA7-79A7-4D59-A1C2-A9B969D44BE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7079EA7-79A7-4D59-A1C2-A9B969D44BE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7079EA7-79A7-4D59-A1C2-A9B969D44BE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7079EA7-79A7-4D59-A1C2-A9B969D44BE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D030CB6-CC46-4A4C-AF8E-15AF2423A6A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D030CB6-CC46-4A4C-AF8E-15AF2423A6A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D030CB6-CC46-4A4C-AF8E-15AF2423A6A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D030CB6-CC46-4A4C-AF8E-15AF2423A6A2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
