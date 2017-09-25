@@ -10,18 +10,18 @@ namespace Aniakanl
 {
     public class TLDExtractor
     {
-        static string SuffixListFilePath = "suffix_publicdomain.txt";
-        static int RenewAfterNDays = 30;
-        static Uri SuffixPublicListUrl = new Uri("https://www.publicsuffix.org/list/public_suffix_list.dat");
+        public static string SuffixListFilePath { get; set; }
+        public static int RenewAfterNDays { get; set; }
+        public static Uri SuffixPublicListUrl { get; set; }
+
+        private static Dictionary<string, DomainSuffixType> suffixes = null;
+
         static TLDExtractor()
         {
-            if (File.Exists(SuffixListFilePath) == false || File.GetCreationTimeUtc(SuffixListFilePath) < DateTime.UtcNow.AddDays(-1 * RenewAfterNDays))
-            {
-                DownloadWebFile(SuffixPublicListUrl, SuffixListFilePath);
-            }
+            SuffixListFilePath = "suffix_publicdomain.txt";
+            RenewAfterNDays = 30;
+            SuffixPublicListUrl = new Uri("https://www.publicsuffix.org/list/public_suffix_list.dat");
         }
-
-        static Dictionary<string , DomainSuffixType> suffixes = null;
 
         public static Dictionary<string, DomainSuffixType> Suffixes
         {
@@ -29,6 +29,13 @@ namespace Aniakanl
             {
                 if (suffixes == null)
                 {
+                    if (File.Exists(SuffixListFilePath) == false ||
+                        ( RenewAfterNDays != -1 &&
+                          File.GetCreationTimeUtc(SuffixListFilePath) < DateTime.UtcNow.AddDays(-1 * RenewAfterNDays)))
+                    {
+                        DownloadWebFile(SuffixPublicListUrl, SuffixListFilePath);
+                    }
+
                     using (StreamReader sr = new StreamReader(SuffixListFilePath))
                     {
                         suffixes = new Dictionary<string, DomainSuffixType>();
@@ -78,7 +85,6 @@ namespace Aniakanl
             }
         }
 
-
         public static ExtractResult Extract(Uri url)
         {
             return Extract(url.Host);
@@ -89,7 +95,8 @@ namespace Aniakanl
         /// </summary>
         /// <param name="hostName">A domain name specified as a string</param>
         /// <returns>Returns ExractResult object that contains various parts of the given domain</returns>
-        /// <exception cref="TLDExtractorException">TLDExtractorException will raise if the domain name is not valid</exception>
+        /// <exception cref="TLDExtractorException">
+        /// TLDExtractorException will raise if the domain name is not valid</exception>
         public static ExtractResult Extract(string hostName)
         {
             ExtractResult result = new ExtractResult();
@@ -101,7 +108,8 @@ namespace Aniakanl
 
             if(hostName.Length > 255)
             {
-                throw new TLDExtractorException("Domain name length cannot be longer than 255 characters");
+                throw new TLDExtractorException(
+                    "Domain name length cannot be longer than 255 characters");
             }
 
             string newSuffix = "";
@@ -117,7 +125,8 @@ namespace Aniakanl
                 }
                 else if(sections.Length>63)
                 {
-                    throw new TLDExtractorException("Domain label length cannot be more than 63 characters (ref: rfc1035)");
+                    throw new TLDExtractorException(
+                        "Domain label length cannot be more than 63 characters (ref: rfc1035)");
                 }
 
                 switch(state)
@@ -159,7 +168,8 @@ namespace Aniakanl
         /// Dowload a web resource specified by a Uri and save it in a file specified by a string
         /// </summary>
         /// <param name="location">The URI specified as a Uri from which to download data</param>
-        /// <param name="outputFile">The location of a file specified by a string to save the data</param>
+        /// <param name="outputFile">The location of a file specified by a string to save the data
+        /// </param>
         public static void DownloadWebFile(Uri location, string outputFile)
         {
             Stream result = null;

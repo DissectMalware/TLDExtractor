@@ -26,7 +26,9 @@ namespace Aniakanl
 
         public override string ToString()
         {
-            return string.Format("ExtractResult(subdomain='{0}', domain='{1}', suffix='{2}', suffix type='{3}')", SubDomain, Domain, Suffix, SuffixType);
+            return string.Format(
+                "ExtractResult(subdomain='{0}', domain='{1}', suffix='{2}', suffix type='{3}')", 
+                SubDomain, Domain, Suffix, SuffixType);
         }
     }
 
