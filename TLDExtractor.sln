@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TLDExtractor", "TLDExtractor\TLDExtractor.csproj", "{D7079EA7-79A7-4D59-A1C2-A9B969D44BE9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TLDExtractorLib", "TLDExtractorLib\TLDExtractorLib.csproj", "{D7079EA7-79A7-4D59-A1C2-A9B969D44BE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TLDExtractorDemo", "TLDExtractorDemo\TLDExtractorDemo.csproj", "{3D030CB6-CC46-4A4C-AF8E-15AF2423A6A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TLDExtractor", "TLDExtractor\TLDExtractor.csproj", "{3D030CB6-CC46-4A4C-AF8E-15AF2423A6A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
