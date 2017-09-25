@@ -11,7 +11,7 @@ namespace Aniakanl
         public string SubDomain { get; set; }
         public string Domain { get; set; }
         public string Suffix { get; set; }
-
+        public DomainSuffixType SuffixType { get; set; }
         public string EffectiveDomain
         {
             get
@@ -26,7 +26,13 @@ namespace Aniakanl
 
         public override string ToString()
         {
-            return string.Format("ExtractResult(subdomain='{0}', domain='{1}', suffix='{2}')", SubDomain, Domain, Suffix);
+            return string.Format("ExtractResult(subdomain='{0}', domain='{1}', suffix='{2}', suffix type='{3}')", SubDomain, Domain, Suffix, SuffixType);
         }
+    }
+
+    public enum DomainSuffixType
+    {
+        ICANN,
+        Private
     }
 }

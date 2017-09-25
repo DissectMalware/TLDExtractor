@@ -11,11 +11,29 @@ namespace Aniakanl
     {
         static void Main(string[] args)
         {
-            var result = TLDExtractor.Extract("tfb.test.www.yahoo.co.uk");
+            var result = TLDExtractor.Extract("tfb.test.www.yahoo.co.uk.ybo.review");
             Console.WriteLine(result);
 
-            result = TLDExtractor.Extract("tfb.test.www.yahoo.invalid.suffix");
-            Console.WriteLine(result);
+            try
+            {
+                result = TLDExtractor.Extract("tfb.test.www.yahoo.invalid.suffix");
+                Console.WriteLine(result);
+            }
+            catch(TLDExtractorException  tldExp)
+            {
+                Console.WriteLine(tldExp.Message);
+            }
+
+            try
+            {
+                result = TLDExtractor.Extract("tfb.test...com");
+                Console.WriteLine(result);
+            }
+            catch (TLDExtractorException tldExp)
+            {
+                Console.WriteLine(tldExp.Message);
+            }
+
         }
     }
 }

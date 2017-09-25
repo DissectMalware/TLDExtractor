@@ -21,29 +21,48 @@ namespace Aniakanl
             }
         }
 
-        static HashSet<string> icannSuffixes = null;
+        static Dictionary<string , DomainSuffixType> suffixes = null;
 
-        public static HashSet<string> ICANNSuffixes
+        public static Dictionary<string, DomainSuffixType> Suffixes
         {
             get
             {
-                if (icannSuffixes == null)
+                if (suffixes == null)
                 {
                     using (StreamReader sr = new StreamReader(SuffixListFilePath))
                     {
-                        icannSuffixes = new HashSet<string>();
+                        suffixes = new Dictionary<string, DomainSuffixType>();
                         string line;
+                        bool isICANNSectionStarted = false;
+                        bool isPrivateSectionStarted = false;
                         while (sr.EndOfStream == false)
                         {
                             line = sr.ReadLine().Trim();
 
-                            if (line.StartsWith("//") == false && string.IsNullOrEmpty(line) == false)
+                            if (isICANNSectionStarted && line.StartsWith("//") == false && string.IsNullOrEmpty(line) == false)
                             {
-                                icannSuffixes.Add(line);
+                                if (suffixes.ContainsKey(line) == false)
+                                {
+                                    suffixes.Add(line, DomainSuffixType.ICANN);
+                                }
+
                             }
-                            else if (line.Contains("===END ICANN DOMAINS===") == true)
+                            else if (isPrivateSectionStarted && line.StartsWith("//") == false && string.IsNullOrEmpty(line) == false)
                             {
-                                break;
+                                if (suffixes.ContainsKey(line) == false)
+                                {
+                                    suffixes.Add(line, DomainSuffixType.Private);
+                                }
+                            }
+                            else if (isICANNSectionStarted == false && line.Contains("===BEGIN ICANN DOMAINS===") == true)
+                            {
+                                isICANNSectionStarted = true;
+                                isPrivateSectionStarted = false;
+                            }
+                            else if (isPrivateSectionStarted == false && line.Contains("===BEGIN PRIVATE DOMAINS===") == true)
+                            {
+                                isPrivateSectionStarted = true;
+                                isICANNSectionStarted = false;
                             }
 
 
@@ -51,27 +70,39 @@ namespace Aniakanl
                         }
                     }
                 }
-                return icannSuffixes;
+                return suffixes;
             }
             set
             {
-                icannSuffixes = value;
+                suffixes = value;
             }
         }
+
 
         public static ExtractResult Extract(Uri url)
         {
             return Extract(url.Host);
         }
 
+        /// <summary>
+        /// Extract parts from a given domain spesified as a string
+        /// </summary>
+        /// <param name="hostName">A domain name specified as a string</param>
+        /// <returns>Returns ExractResult object that contains various parts of the given domain</returns>
+        /// <exception cref="TLDExtractorException">TLDExtractorException will raise if the domain name is not valid</exception>
         public static ExtractResult Extract(string hostName)
         {
             ExtractResult result = new ExtractResult();
 
 
-            hostName = hostName.ToLowerInvariant();
+            hostName = hostName.ToLowerInvariant().Trim();
 
             string[] sections = hostName.Split('.');
+
+            if(hostName.Length > 255)
+            {
+                throw new TLDExtractorException("Domain name length cannot be longer than 255 characters");
+            }
 
             string newSuffix = "";
 
@@ -79,18 +110,34 @@ namespace Aniakanl
             string state = "suffix";
             for (int i = sections.Length - 1; i >= 0; i--)
             {
+                // TODO make exception messages more clear
+                if(string.IsNullOrEmpty(sections[i]) == true)
+                {
+                    throw new TLDExtractorException("Domain label cannot be null or empty");
+                }
+                else if(sections.Length>63)
+                {
+                    throw new TLDExtractorException("Domain label length cannot be more than 63 characters (ref: rfc1035)");
+                }
+
                 switch(state)
                 {
                     case "suffix":
 
                         newSuffix = (sections[i] + "." + result.Suffix).Trim('.');
 
-                        if (ICANNSuffixes.Contains(newSuffix) == true)
+                        if (Suffixes.ContainsKey(newSuffix) == true)
                         {
-                            result.Suffix = newSuffix;     
+                            result.Suffix = newSuffix;
+                            result.SuffixType = Suffixes[newSuffix];
                         }
                         else
                         {
+                            if(string.IsNullOrWhiteSpace(result.Suffix) ==true)
+                            {
+                                throw new TLDExtractorException("Domain suffix cannot be empty");
+                            }
+                            
                             result.Domain = sections[i];
                             state = "subdomain";
                         }
