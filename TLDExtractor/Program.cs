@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Aniakanl
 {
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {
@@ -17,10 +17,11 @@ namespace Aniakanl
             // Never expire local suffixpubliclist file
             TLDExtractor.RenewAfterNDays = -1; // default value is 30
 
-            // Redownload suffixpubliclist if the local version was created more than 30 days ago
-            // TLDExtractor.RenewAfterNDays = 30; 
+            var result = TLDExtractor.Extract("www.test.nom.ae");
+            Console.WriteLine(result);
 
-            var result = TLDExtractor.Extract("tfb.test.www.yahoo.co.uk.ybo.review");
+            Uri guestUrl = new Uri("http://www.example.com/mine.html");
+            result = TLDExtractor.Extract(guestUrl);
             Console.WriteLine(result);
 
             try

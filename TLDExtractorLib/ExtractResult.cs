@@ -18,10 +18,6 @@ namespace Aniakanl
             {
                 return Domain + "." + Suffix;
             }
-            private set
-            {
-
-            }
         }
 
         public override string ToString()

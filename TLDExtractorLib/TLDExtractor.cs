@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Aniakanl
 {
-    public class TLDExtractor
+    public static class TLDExtractor
     {
         public static string SuffixListFilePath { get; set; }
         public static int RenewAfterNDays { get; set; }
         public static Uri SuffixPublicListUrl { get; set; }
 
-        private static Dictionary<string, DomainSuffixType> suffixes = null;
+        private static Dictionary<string, DomainSuffixType> suffixes;
 
         static TLDExtractor()
         {
@@ -154,6 +154,8 @@ namespace Aniakanl
                     case "subdomain":
                         result.SubDomain = sections[i] + "." + result.SubDomain;
                         break;
+                    default:
+                        throw new NotImplementedException();
 
                 }
                                            
