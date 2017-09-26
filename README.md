@@ -1,5 +1,7 @@
 # TLDExtractor
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/cb49a4752ea24f16968f46624cd7c5de)](https://www.codacy.com/app/aniakanl/TLDExtractor?utm_source=github.com&utm_medium=referral&utm_content=aniakanl/TLDExtractor&utm_campaign=badger)
+
 ## C# Library
 `TLDExtractor` is similar to [tldextract library (in Python)](https://github.com/john-kurkowski/tldextract). By using TLDExtractor, you can accurately extract subdomain, domain, and domain suffix (effective TLD) of a given domain name.
 
