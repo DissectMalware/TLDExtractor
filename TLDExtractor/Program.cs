@@ -11,13 +11,31 @@ namespace Aniakanl
     {
         static void Main(string[] args)
         {
+
+
             // default value is "suffix_publicdomain.txt"
             TLDExtractor.SuffixListFilePath = "change_the_default_file_name.txt";
 
             // Never expire local suffixpubliclist file
             TLDExtractor.RenewAfterNDays = -1; // default value is 30
 
-            var result = TLDExtractor.Extract("www.test.nom.ae");
+            ExtractResult result;
+            string url = "www.test.nom.ae";
+            bool isExtracted = TLDExtractor.TryExtract(url, out result);
+            if(isExtracted)
+                Console.WriteLine(result);
+            else
+                Console.WriteLine("Something went wrong " + url);
+
+            url = "www.test.nom.ae.notasuffix";
+            isExtracted = TLDExtractor.TryExtract( url, out result);
+            if (isExtracted)
+                Console.WriteLine(result);
+            else
+                Console.WriteLine("Something went wrong "+url);
+
+
+            result = TLDExtractor.Extract("www.test.nom.ae");
             Console.WriteLine(result);
 
             Uri guestUrl = new Uri("http://www.example.com/mine.html");

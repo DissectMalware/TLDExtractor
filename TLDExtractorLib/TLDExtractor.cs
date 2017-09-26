@@ -90,6 +90,11 @@ namespace Aniakanl
             return Extract(url.Host);
         }
 
+        public static bool TryExtract(Uri url, out ExtractResult result )
+        {
+            return TryExtract(url.Host, out result);
+        }
+
         /// <summary>
         /// Extract parts from a given domain spesified as a string
         /// </summary>
@@ -164,6 +169,87 @@ namespace Aniakanl
             result.SubDomain = result.SubDomain.TrimEnd('.');
 
             return result;
+        }
+
+        /// <summary>
+        /// Try to extract parts from a given domain spesified as a string
+        /// </summary>
+        /// <param name="hostName">A domain name specified as a string</param>
+        /// <param name="result">If function executed successfully, result points to 
+        /// an ExractResult object that contains various parts of the given domain</param>
+        /// <returns>Returns true if the extraction was successful</returns>
+        public static bool TryExtract(string hostName, out ExtractResult result)
+        {
+            bool isExtracted = true;
+            result = new ExtractResult();
+
+
+            hostName = hostName.ToLowerInvariant().Trim();
+
+            string[] sections = hostName.Split('.');
+
+            if (hostName.Length > 255)
+            {
+                isExtracted = false;
+            }
+
+            string newSuffix = "";
+
+
+            string state = "suffix";
+            for (int i = sections.Length - 1; i >= 0; i--)
+            {
+                // TODO make exception messages more clear
+                if (string.IsNullOrEmpty(sections[i]) == true)
+                {
+                    isExtracted = false;
+                    break;
+                }
+                else if (sections.Length > 63)
+                {
+                    isExtracted = false;
+                    break;
+                }
+
+                switch (state)
+                {
+                    case "suffix":
+
+                        newSuffix = (sections[i] + "." + result.Suffix).Trim('.');
+
+                        if (Suffixes.ContainsKey(newSuffix) == true)
+                        {
+                            result.Suffix = newSuffix;
+                            result.SuffixType = Suffixes[newSuffix];
+                        }
+                        else
+                        {
+                            if (string.IsNullOrWhiteSpace(result.Suffix) == true)
+                            {
+                                isExtracted = false;
+                                break;
+                            }
+
+                            result.Domain = sections[i];
+                            state = "subdomain";
+                        }
+                        break;
+                    case "subdomain":
+                        result.SubDomain = sections[i] + "." + result.SubDomain;
+                        break;
+                    default:
+                        throw new NotImplementedException();
+
+                }
+
+            }
+
+            result.SubDomain = result.SubDomain.TrimEnd('.');
+
+            if (isExtracted == false)
+                result = null;
+
+            return isExtracted;
         }
 
         /// <summary>
