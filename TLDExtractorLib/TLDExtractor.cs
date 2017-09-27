@@ -199,13 +199,8 @@ namespace Aniakanl
             string state = "suffix";
             for (int i = sections.Length - 1; i >= 0; i--)
             {
-                // TODO make exception messages more clear
-                if (string.IsNullOrEmpty(sections[i]) == true)
-                {
-                    isExtracted = false;
-                    break;
-                }
-                else if (sections.Length > 63)
+                
+                if (string.IsNullOrEmpty(sections[i]) == true || sections.Length > 63)
                 {
                     isExtracted = false;
                     break;

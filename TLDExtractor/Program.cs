@@ -22,17 +22,25 @@ namespace Aniakanl
             ExtractResult result;
             string url = "www.test.nom.ae";
             bool isExtracted = TLDExtractor.TryExtract(url, out result);
-            if(isExtracted)
+            if (isExtracted)
+            {
                 Console.WriteLine(result);
+            }
             else
+            {
                 Console.WriteLine("Something went wrong " + url);
+            }
 
             url = "www.test.nom.ae.notasuffix";
             isExtracted = TLDExtractor.TryExtract( url, out result);
             if (isExtracted)
+            {
                 Console.WriteLine(result);
+            }
             else
-                Console.WriteLine("Something went wrong "+url);
+            {
+                Console.WriteLine("Something went wrong " + url);
+            }
 
 
             result = TLDExtractor.Extract("www.test.nom.ae");
