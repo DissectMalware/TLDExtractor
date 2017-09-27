@@ -5,7 +5,7 @@
 
 It is a common mistake to split a domain name with '.' character and consider the last part as a domain suffix. For example, consider 'www.yahoo.co.uk', in this domain, 'co.uk' is the suffix not 'uk'.
 
-`TLDExtractor` utilize [the Public Suffix List](https://www.publicsuffix.org/list/public_suffix_list.dat) to correctly identify the suffix for a given domain name. To extract subdomain, domain, and domain suffix, you can:
+`TLDExtractor` utilize [the Public Suffix List](https://www.publicsuffix.org/list/public_suffix_list.dat) to correctly identify the suffix for a given domain name. To extract subdomain, domain, and domain suffix, you can use `TLDExtractor.Extract` methods:
 
 ```csharp
 var result = TLDExtractor.Extract("www.yahoo.co.uk");
@@ -24,7 +24,23 @@ var result = TLDExtractor.Extract(guestUrl);
 //    {ExtractResult(subdomain='www', domain='example', suffix='com', suffix type='ICANN')}
 ```
 
-If the domain name is not valid, `TLDExtractor` raises `TLDExtractorException` with an appropriate message explaining the problem. According to [RFC 1035](https://tools.ietf.org/html/rfc1035) domain names must be equal or less than 255 characters and each label such as `yahoo` or `www` must be equal or less than 63 characters. Moreover, domain labels cannot be empty. For example, test..com is not valid. 
+If the domain name is not valid, `TLDExtractor.Extract` raises `TLDExtractorException` with an appropriate message explaining the problem. According to [RFC 1035](https://tools.ietf.org/html/rfc1035), domain names must be equal or less than 255 characters, and each label such as `yahoo` or `www` must be equal or less than 63 characters. Moreover, domain labels cannot be empty. For example, test..com is not valid. 
+
+In addition to `TLDExtractor.Extract` method, you can use `TLDExtractor.TryExtract` method to extract domain parts from a domain or URL, the only difference these two is that `TLDExtractor.TryExtract` does not raise any `TLDExtractorException` exception. It returns false if the given domain name is not a valid one.
+
+```csharp
+ExtractResult result;
+bool isExtracted = TLDExtractor.TryExtract("www.yahoo.co.uk", out result);
+
+if(isExtracted)
+{
+    // do something
+}
+else
+{
+    // something went wrong
+}
+```
 
 By default, `TLDExtractor` downloads [the Public Suffix List](https://www.publicsuffix.org/list/public_suffix_list.dat) from the Internet if it doesn't exist in the working directory or it is too old (it is created more than 30 days). You can override these default values by
 
