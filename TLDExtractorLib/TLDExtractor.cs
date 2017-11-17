@@ -182,7 +182,7 @@ namespace Aniakanl
         {
             bool isExtracted = true;
             result = new ExtractResult();
-
+            result.SubDomain = "";
 
             hostName = hostName.ToLowerInvariant().Trim();
 
@@ -242,7 +242,9 @@ namespace Aniakanl
             result.SubDomain = result.SubDomain.TrimEnd('.');
 
             if (isExtracted == false)
+            {
                 result = null;
+            }
 
             return isExtracted;
         }
