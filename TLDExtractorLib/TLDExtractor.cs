@@ -105,7 +105,7 @@ namespace Aniakanl
         public static ExtractResult Extract(string hostName)
         {
             ExtractResult result = new ExtractResult();
-
+            result.SubDomain = "";
 
             hostName = hostName.ToLowerInvariant().Trim();
 
